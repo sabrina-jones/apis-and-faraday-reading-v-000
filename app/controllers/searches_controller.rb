@@ -3,23 +3,24 @@ class SearchesController < ApplicationController
   end
 
   def foursquare
-    @resp = Faraday.get 'https://api.foursquare.com/v2/venues/search' do |req|
-    req.params['client_id'] = "YNBPE5EFHQ4XETZ0VB0BGKP53RCOULQBC2ZMUS4SEHMY1QTA"
-    req.params['client_secret'] = "CEFBMAQOK0QYDPTUC0WBFHXQ3LJDQMWP05XJMBBSRTXUTR0D"
-    req.params['v'] = '20160201'
-    req.params['near'] = params[:zipcode]
-    req.params['query'] = 'coffee shop'
-    req.options.timeout = 0
-  end
-    body = JSON.parse(@resp.body)
-       if @resp.success?
-         @venues = body["response"]["venues"]
-       else
-         @error = body["meta"]["errorDetail"]
-       end
-      rescue Faraday::ConnectionFailed
-        @error = "There was a timeout. Please try again."
-      end
+    begin
+        @resp = Faraday.get 'https://api.foursquare.com/v2/venues/search' do |req|
+            req.params['client_id'] = 'SOCUJ5FZFENUS3TCSWZPGSE1QTADHIHFMUX2HI3JE1QTDS1E'
+            req.params['client_secret'] = 'O1VQE31IYMDNOIWOQFQXYGTYSJTCTI1JKDHUWPV1XJBSEIUD'
+            req.params['v'] = '20160201'
+            req.params['near'] = params[:zipcode]
+            req.params['query'] = 'coffee shop'
+          end
+          body = JSON.parse(@resp.body)
+          if @resp.success?
+            @venues = body["response"]["venues"]
+          else
+            @error = body["meta"]["errorDetail"]
+          end
+
+        rescue Faraday::ConnectionFailed
+          @error = "There was a timeout. Please try again."
+        end
         render 'search'
-end
+      end
 end
