@@ -23,7 +23,6 @@ rescue Faraday::ConnectionFailed
 end
 render 'search'
 
-end
 
 
 end
